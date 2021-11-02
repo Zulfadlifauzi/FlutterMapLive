@@ -30,15 +30,16 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
   }
 
   Widget googleMapUI() {
-    return Consumer<LocationProvider>(builder: (consumerContext, model, child) {
-      if (model.locationPosition == null) {
+    return Consumer<LocationProvider>(
+        builder: (consumerContext, modelMap, child) {
+      if (modelMap.locationPosition != null) {
         return Column(
           children: [
             Expanded(
                 child: GoogleMap(
               mapType: MapType.normal,
               initialCameraPosition: CameraPosition(
-                target: model.locationPosition!,
+                target: modelMap.locationPosition ?? modelMap.locationPosition!,
                 zoom: 18,
               ),
               myLocationEnabled: true,
@@ -48,7 +49,6 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
           ],
         );
       }
-
       return Container(
         child: Center(
           child: CircularProgressIndicator(),
