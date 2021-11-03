@@ -44,6 +44,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
               ),
               myLocationEnabled: true,
               myLocationButtonEnabled: true,
+              markers: Set<Marker>.of(modelMap.markers!.values),
               onMapCreated: (GoogleMapController controller) {},
             ))
           ],

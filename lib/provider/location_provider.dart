@@ -3,6 +3,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 class LocationProvider with ChangeNotifier {
+  BitmapDescriptor? _pinLocationIcon;
+  BitmapDescriptor get pinLocationIcon => _pinLocationIcon!;
+  Map<MarkerId, Marker>? _markers;
+  Map<MarkerId, Marker>? get markers => _markers;
+
+  final MarkerId markerId = const MarkerId('1');
+
   Location? _location;
   Location get location => _location!;
   LatLng? _locationPosition;
@@ -16,6 +23,7 @@ class LocationProvider with ChangeNotifier {
 
   initialization() async {
     await getUserLocation();
+    await setCustomMapPin();
   }
 
   getUserLocation() async {
@@ -40,8 +48,29 @@ class LocationProvider with ChangeNotifier {
     location.onLocationChanged.listen((LocationData currentLocation) {
       _locationPosition =
           LatLng(currentLocation.latitude!, currentLocation.longitude!);
+      print(_locationPosition);
+
+      _markers = <MarkerId, Marker>{};
+      Marker marker = Marker(
+          markerId: markerId,
+          position:
+              LatLng(currentLocation.latitude!, currentLocation.longitude!),
+          icon: pinLocationIcon,
+          draggable: true,
+          onDragEnd: ((newPosition) {
+            _locationPosition =
+                LatLng(newPosition.latitude, newPosition.longitude);
+            notifyListeners();
+          }));
+
+      _markers?[markerId] = marker;
+
+      notifyListeners();
     });
-    print(_locationPosition);
-    notifyListeners();
+  }
+
+  setCustomMapPin() async {
+    _pinLocationIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/marker2.png');
   }
 }
