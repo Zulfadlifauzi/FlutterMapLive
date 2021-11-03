@@ -3,8 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:mapliveflutter/provider/location_provider.dart';
 import 'package:mapliveflutter/screens/google_map_page.dart';
-import 'package:mapliveflutter/screens/home_screes.dart';
+import 'package:mapliveflutter/screens/home_screens.dart';
 import 'package:provider/provider.dart';
+
 void main() {
   runApp(const MyApp());
 }

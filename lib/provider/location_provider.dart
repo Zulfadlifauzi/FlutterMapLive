@@ -19,28 +19,29 @@ class LocationProvider with ChangeNotifier {
   }
 
   getUserLocation() async {
-    // bool _serviceEnable;
-    // PermissionStatus _permissionGranted;
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
 
-    // _serviceEnable = await location.serviceEnabled();
-    // if (!_serviceEnable) {
-    //   _serviceEnable = await location.requestService();
-
-    //   if (!_serviceEnable) {
-    //     return;
-    //   }
-    // }
-    // _permissionGranted = await location.hasPermission();
-    // if (_permissionGranted == PermissionStatus.denied) {
-    //   _permissionGranted = await location.requestPermission();
-    //   if (_permissionGranted != PermissionStatus.granted) {
-    //     return;
-    //   }
-    // }
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
 
     location.onLocationChanged.listen((LocationData currentLocation) {
       _locationPosition =
           LatLng(currentLocation.latitude!, currentLocation.longitude!);
     });
+    print(_locationPosition);
+    notifyListeners();
   }
 }

@@ -16,7 +16,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<LocationProvider>(context, listen: false).initialization;
+    Provider.of<LocationProvider>(context, listen: false).initialization();
   }
 
   @override
